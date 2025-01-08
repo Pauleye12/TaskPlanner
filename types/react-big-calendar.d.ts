@@ -4,7 +4,7 @@ declare module "react-big-calendar" {
     title: string;
   }
 
-  export interface CalendarProps<T = unknown> {
+  export interface CalendarProps<T> {
     localizer: Localizer;
     events: T[];
     startAccessor: string | ((event: T) => Date);
@@ -13,10 +13,13 @@ declare module "react-big-calendar" {
     eventPropGetter?: (event: T) => { style: React.CSSProperties };
     onSelectEvent?: (event: T) => void;
     views?: View[];
+    view?: View;
+    onView?: (view: View) => void;
+    onNavigate?: (newDate: Date) => void;
+    className?: string;
     components?: {
       event?: React.ComponentType<EventProps<T>>;
     };
-    className?: string;
   }
 
   export type View = "month" | "week" | "day";

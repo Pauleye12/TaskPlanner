@@ -5,6 +5,7 @@ import {
   Calendar,
   momentLocalizer,
   Views,
+  View,
   EventProps,
 } from "react-big-calendar";
 import moment from "moment";
@@ -31,6 +32,7 @@ import { format, addMinutes } from "date-fns";
 import { useRouter } from "next/navigation";
 import OverdueTasksWarning from "./OverdueTasksWarning";
 import { Checkbox } from "@/components/ui/checkbox";
+import Link from "next/link";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -45,6 +47,7 @@ const TaskCalendar: React.FC = () => {
   } = useTaskContext();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const router = useRouter();
+  const [view, setView] = useState<View>(Views.MONTH);
 
   const eventStyleGetter = (event: Task) => {
     let backgroundColor = "";
@@ -118,12 +121,16 @@ const TaskCalendar: React.FC = () => {
     setIsWorkHoursSet(false);
   };
 
-  const handleAddTask = () => {
-    router.push("/add-task");
-  };
+  // const handleAddTask = () => {
+  //   router.push("/add-task");
+  // };
 
   const handleTaskCompletion = (task: Task, checked: boolean) => {
     markTaskAsCompleted(task.id, checked);
+  };
+
+  const handleViewChange = (newView: View) => {
+    setView(newView);
   };
 
   return (
@@ -132,18 +139,36 @@ const TaskCalendar: React.FC = () => {
         <div className="mb-4 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-white">Your Tasks</h2>
           <div className="space-x-2">
-            <Button
-              onClick={handleAddTask}
-              className="bg-teal-600 hover:bg-teal-700 text-white"
+            <Link
+              href={"/add-task"}
+              className="bg-teal-600 rounded-lg px-3 py-2 hover:bg-teal-700 text-white"
             >
               Add Task
-            </Button>
+            </Link>
             <Button
               onClick={handleResetWorkHours}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               Reset Work Hours
             </Button>
+            {/* <Button
+              onClick={() => handleViewChange(Views.DAY)}
+              className="text-white"
+            >
+              Day
+            </Button>
+            <Button
+              onClick={() => handleViewChange(Views.WEEK)}
+              className="text-white"
+            >
+              Week
+            </Button>
+            <Button
+              onClick={() => handleViewChange(Views.MONTH)}
+              className="text-white"
+            >
+              Month
+            </Button> */}
           </div>
         </div>
         <OverdueTasksWarning />
@@ -161,6 +186,12 @@ const TaskCalendar: React.FC = () => {
             eventPropGetter={eventStyleGetter}
             onSelectEvent={handleSelectEvent}
             views={[Views.MONTH, Views.WEEK, Views.DAY]}
+            view={view}
+            onView={handleViewChange}
+            // onNavigate={(date) => {
+            //   console.log("Navigated to:", date);
+            //   // Implement your date navigation logic here
+            // }}
             className="rounded-lg overflow-hidden custom-calendar"
             components={{
               event: (props: EventProps<Task>) => (
