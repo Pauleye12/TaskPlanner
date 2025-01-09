@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   Calendar,
   momentLocalizer,
@@ -47,7 +47,7 @@ const TaskCalendar: React.FC = () => {
   } = useTaskContext();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const router = useRouter();
-  const [view, setView] = useState<View>(Views.MONTH);
+  const [view, setView] = useState<View>(Views.DAY);
 
   const eventStyleGetter = (event: Task) => {
     let backgroundColor = "";
@@ -129,9 +129,17 @@ const TaskCalendar: React.FC = () => {
     markTaskAsCompleted(task.id, checked);
   };
 
-  const handleViewChange = (newView: View) => {
-    setView(newView);
-  };
+  const handleViewChange = useCallback(
+    (newView: View) => {
+      setView(newView);
+    },
+    [setView]
+  );
+
+  const handleNavigate = useCallback(() => {
+    // console.log("Calendar navigated to:", format(date, "PPP"));
+    // TODO: Implement date navigation logic if needed
+  }, []);
 
   return (
     <div className="w-full bg-white rounded-lg shadow-xl overflow-hidden">
@@ -188,10 +196,8 @@ const TaskCalendar: React.FC = () => {
             views={[Views.MONTH, Views.WEEK, Views.DAY]}
             view={view}
             onView={handleViewChange}
-            // onNavigate={(date) => {
-            //   console.log("Navigated to:", date);
-            //   // Implement your date navigation logic here
-            // }}
+            onNavigate={handleNavigate}
+            defaultView={Views.DAY}
             className="rounded-lg overflow-hidden custom-calendar"
             components={{
               event: (props: EventProps<Task>) => (
