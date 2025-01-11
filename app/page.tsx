@@ -1,13 +1,14 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import TaskCalendar from '@/components/TaskCalendar'
-import WorkHoursSetup from '@/components/WorkHoursSetup'
-import { useTaskContext } from '@/components/TaskContext'
-import { motion } from 'framer-motion'
+// import { useEffect } from "react";
+import TaskCalendar from "@/components/TaskCalendar";
+import WorkHoursSetup from "@/components/WorkHoursSetup";
+import { useTaskContext } from "@/components/TaskContext";
+import { motion } from "framer-motion";
+import Navbar from "@/components/Navbar";
 
 const MainContent = () => {
-  const { isWorkHoursSet } = useTaskContext()
+  const { isWorkHoursSet } = useTaskContext();
 
   return (
     <motion.div
@@ -17,27 +18,24 @@ const MainContent = () => {
     >
       {isWorkHoursSet ? <TaskCalendar /> : <WorkHoursSetup />}
     </motion.div>
-  )
-}
+  );
+};
 
 export default function Home() {
-  useEffect(() => {
-    document.body.classList.add('bg-gradient')
-  }, [])
+  // useEffect(() => {
+  //   document.body.classList.add('bg-gradient')
+  // }, [])
 
   return (
-    <main className="min-h-screen p-8">
+    <main className="min-h-screen pt-[80px] pb-0 p-8">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="mb-8 text-5xl font-bold text-white text-center shadow-text">
-          Smart Task Planner
-        </h1>
+        <Navbar />
       </motion.div>
       <MainContent />
     </main>
-  )
+  );
 }
-

@@ -16,7 +16,12 @@ declare module "react-big-calendar" {
     view?: View;
     onView?: (view: View) => void;
     defaultView?: string;
-    onNavigate?: () => void;
+    date?: Date;
+    onNavigate?: (
+      newDate: Date,
+      view: View,
+      action: "PREV" | "NEXT" | "TODAY" | "DATE"
+    ) => void;
     className?: string;
     components?: {
       event?: React.ComponentType<EventProps<T>>;
