@@ -122,7 +122,7 @@ const TaskCalendar: React.FC = () => {
       tasks.filter((task) =>
         task.isWorkHours ? isWithinWorkHours(task.start, task.end) : true
       ),
-    [tasks, workHours]
+    [tasks, workHours, isWithinWorkHours]
   );
 
   // const handleResetWorkHours = () => {
@@ -188,7 +188,7 @@ const TaskCalendar: React.FC = () => {
             events={filteredTasks}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: 450 }}
+            style={{ height: 500 }}
             eventPropGetter={eventStyleGetter}
             onSelectEvent={handleSelectEvent}
             views={[Views.MONTH, Views.WEEK, Views.DAY]}

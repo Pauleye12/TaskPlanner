@@ -27,12 +27,13 @@ import { Switch } from "@/components/ui/switch";
 import { TimePicker } from "@/components/ui/time-picker";
 import ToastNotification from "./ToastNotification";
 
+import { useRouter } from "next/navigation";
+
 interface TaskFormProps {
   task?: Task;
-  onClose?: () => void;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
   const [title, setTitle] = useState(task?.title || "");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     task ? new Date(task.start) : new Date()
@@ -60,6 +61,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   } | null>(null);
 
   const { addTask, updateTask } = useTaskContext();
+  const router = useRouter();
 
   useEffect(() => {
     if (task) {
@@ -125,7 +127,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       });
     }
 
-    if (onClose) onClose();
+    router.push("/");
   };
 
   // const findNextAvailableSlot = (
@@ -204,51 +206,53 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="bg-gray-800 text-white border-gray-700"
+          className="bg-gray-800 h-fit py-2 text-white  border-gray-700"
         />
       </div>
-      <div>
-        <Label htmlFor="date" className="text-white">
-          Date
-        </Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full justify-start text-left font-normal",
-                !selectedDate && "text-muted-foreground",
-                "bg-gray-800 text-white border-gray-700"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {selectedDate ? (
-                format(selectedDate, "PPP")
-              ) : (
-                <span>Pick a date</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 bg-gray-800">
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-              initialFocus
-              className="bg-gray-800 text-white"
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-      <div>
-        <Label htmlFor="time" className="text-white">
-          Time
-        </Label>
-        <TimePicker
-          value={selectedTime}
-          onChange={(value) => setSelectedTime(value)}
-          className="bg-gray-800 text-white border-gray-700"
-        />
+      <div className="w-full flex lg:flex-row flex-col justify-between items-center gap-3">
+        <div>
+          <Label htmlFor="date" className="text-white">
+            Date
+          </Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !selectedDate && "text-muted-foreground",
+                  "bg-gray-800 text-white h-fit py-2 border-gray-700"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {selectedDate ? (
+                  format(selectedDate, "PPP")
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-gray-800">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                initialFocus
+                className="bg-gray-800 text-white"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div>
+          <Label htmlFor="time" className="text-white">
+            Time
+          </Label>
+          <TimePicker
+            value={selectedTime}
+            onChange={(value) => setSelectedTime(value)}
+            className="bg-gray-800  text-white border-gray-700"
+          />
+        </div>
       </div>
       <div>
         <Label htmlFor="duration" className="text-white">
