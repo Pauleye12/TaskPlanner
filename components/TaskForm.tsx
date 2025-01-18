@@ -41,6 +41,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
   const [selectedTime, setSelectedTime] = useState<string>(
     task ? format(task.start, "HH:mm") : format(new Date(), "HH:mm")
   );
+  const [titleWarn, setTitleWarn] = useState(false);
   const [duration, setDuration] = useState(task?.duration.toString() || "60");
   const [priority, setPriority] = useState<Priority>(
     task?.priority || "medium"
@@ -80,6 +81,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!title) {
+      setTitleWarn(true);
+      return;
+    }
     if (!selectedDate) {
       toast({
         title: "Error",
@@ -195,9 +200,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 bg-gray-900 text-white p-6 rounded-lg"
+      className="space-y-4 bg-gray-900 flex flex-col w-full gap-4 items-center text-white p-6 rounded-lg"
     >
-      <div>
+      <div className="flex w-full flex-col items-start gap-2 ">
         <Label htmlFor="title" className="text-white">
           Task Title
         </Label>
@@ -205,12 +210,17 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          required
-          className="bg-gray-800 h-fit py-2 text-white  border-gray-700"
+          // required
+          className="bg-gray-800 h-fit py-2  text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700"
         />
+        <p
+          className={`text-red-500 text-sm ${titleWarn ? "block" : "hidden"} `}
+        >
+          Please fill out the title
+        </p>
       </div>
-      <div className="w-full flex lg:flex-row flex-col justify-between items-center gap-3">
-        <div>
+      <div className="w-full flex md:flex-row flex-col justify-between items-center gap-3">
+        <div className="w-full flex flex-col items-start gap-2 lg:max-w-[40%]">
           <Label htmlFor="date" className="text-white">
             Date
           </Label>
@@ -219,7 +229,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-full justify-start text-left font-normal",
+                  "w-full justify-start text-left focus-visible:ring-0 border-none active:ring-0 hover:bg-gray-600 hover:text-white outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700 font-normal",
                   !selectedDate && "text-muted-foreground",
                   "bg-gray-800 text-white h-fit py-2 border-gray-700"
                 )}
@@ -243,50 +253,55 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
             </PopoverContent>
           </Popover>
         </div>
-        <div>
+        <div className="w-full flex flex-col items-start gap-2 lg:max-w-[40%]">
           <Label htmlFor="time" className="text-white">
             Time
           </Label>
           <TimePicker
             value={selectedTime}
             onChange={(value) => setSelectedTime(value)}
-            className="bg-gray-800  text-white border-gray-700"
+            className="bg-gray-800 rounded-lg w-full  text-white border-gray-700"
           />
         </div>
       </div>
-      <div>
-        <Label htmlFor="duration" className="text-white">
-          Duration (minutes)
-        </Label>
-        <Input
-          id="duration"
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          required
-          min="1"
-          className="bg-gray-800 text-white border-gray-700"
-        />
+      <div className="flex w-full gap-3 justify-between items-center">
+        <div className="w-full flex flex-col items-start gap-2 lg:max-w-[40%]">
+          <Label htmlFor="duration" className="text-white">
+            Duration (minutes)
+          </Label>
+          <Input
+            id="duration"
+            type="number"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            required
+            min="1"
+            // style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
+            className="bg-gray-800 h-fit py-2 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700"
+          />
+        </div>
+        <div className="w-full flex flex-col items-start gap-2 lg:max-w-[40%] ">
+          <Label htmlFor="priority" className="text-white">
+            Priority
+          </Label>
+          <Select
+            value={priority}
+            onValueChange={(value: Priority) => setPriority(value)}
+          >
+            <SelectTrigger className="bg-gray-800 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700 w-full h-fit hover:bg-gray-600 py-2">
+              <SelectValue placeholder="Select priority" />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-800  border-none text-white">
+              <SelectItem className="" value="low">
+                Low
+              </SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-      <div>
-        <Label htmlFor="priority" className="text-white">
-          Priority
-        </Label>
-        <Select
-          value={priority}
-          onValueChange={(value: Priority) => setPriority(value)}
-        >
-          <SelectTrigger className="bg-gray-800 text-white border-gray-700">
-            <SelectValue placeholder="Select priority" />
-          </SelectTrigger>
-          <SelectContent className="bg-gray-800 text-white">
-            <SelectItem value="low">Low</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="high">High</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
+      <div className="flex flex-col items-start gap-2 w-full ">
         <Label htmlFor="description" className="text-white">
           Description
         </Label>
@@ -295,10 +310,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          className="bg-gray-800 text-white border-gray-700"
+          className="bg-gray-800 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700"
         />
       </div>
-      <div>
+      <div className="flex flex-col items-start gap-2 w-full">
         <Button
           type="button"
           onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
@@ -309,7 +324,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
         </Button>
       </div>
       {showAdvancedOptions && (
-        <div className="space-y-4 mt-4 p-4 bg-gray-800 rounded-lg">
+        <div className="space-y-4 mt-4 w-full p-4 bg-gray-800 rounded-lg">
           <div>
             <Label htmlFor="repeat" className="text-white">
               Repeat
@@ -321,7 +336,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
               <SelectTrigger className="bg-gray-700 text-white border-gray-600">
                 <SelectValue placeholder="Select repeat option" />
               </SelectTrigger>
-              <SelectContent className="bg-gray-700 text-white">
+              <SelectContent className="bg-gray-700 border-none text-white">
                 <SelectItem value="none">None</SelectItem>
                 <SelectItem value="daily">Daily</SelectItem>
                 <SelectItem value="weekly">Weekly</SelectItem>
