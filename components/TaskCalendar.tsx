@@ -101,28 +101,31 @@ const TaskCalendar: React.FC = () => {
     }
   };
 
-  const isWithinWorkHours = (start: Date, end: Date) => {
-    const dayOfWeek = start
-      .toLocaleDateString("en-US", { weekday: "long" })
-      .toLowerCase() as DayOfWeek;
-    const dayWorkHours = workHours[dayOfWeek];
+  const isWithinWorkHours = useCallback(
+    (start: Date, end: Date) => {
+      const dayOfWeek = start
+        .toLocaleDateString("en-US", { weekday: "long" })
+        .toLowerCase() as DayOfWeek;
+      const dayWorkHours = workHours[dayOfWeek];
 
-    if (!dayWorkHours.isWorkDay) return false;
+      if (!dayWorkHours.isWorkDay) return false;
 
-    const startTime = format(start, "HH:mm");
-    const endTime = format(end, "HH:mm");
+      const startTime = format(start, "HH:mm");
+      const endTime = format(end, "HH:mm");
 
-    return (
-      startTime >= dayWorkHours.startTime && endTime <= dayWorkHours.endTime
-    );
-  };
+      return (
+        startTime >= dayWorkHours.startTime && endTime <= dayWorkHours.endTime
+      );
+    },
+    [workHours]
+  );
 
   const filteredTasks = useMemo(
     () =>
       tasks.filter((task) =>
         task.isWorkHours ? isWithinWorkHours(task.start, task.end) : true
       ),
-    [tasks, workHours, isWithinWorkHours]
+    [tasks, isWithinWorkHours]
   );
 
   // const handleResetWorkHours = () => {
@@ -150,155 +153,138 @@ const TaskCalendar: React.FC = () => {
   );
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-xl overflow-hidden">
-      <div className="p-6 bg-gradient-to-r from-indigo-400 to-blue-500">
-        <div className="mb-4 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-white">Your Tasks</h2>
-          {/* <div className="space-x-2">
-            
-            
-             <Button
-              onClick={() => handleViewChange(Views.DAY)}
-              className="text-white"
-            >
-              Day
-            </Button>
-            <Button
-              onClick={() => handleViewChange(Views.WEEK)}
-              className="text-white"
-            >
-              Week
-            </Button>
-            <Button
-              onClick={() => handleViewChange(Views.MONTH)}
-              className="text-white"
-            >
-              Month
-            </Button> 
-          </div> */}
-        </div>
-        <OverdueTasksWarning />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Calendar
-            localizer={localizer}
-            events={filteredTasks}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500 }}
-            eventPropGetter={eventStyleGetter}
-            onSelectEvent={handleSelectEvent}
-            views={[Views.MONTH, Views.WEEK, Views.DAY]}
-            view={view}
-            onView={handleViewChange}
-            defaultView={Views.DAY}
-            onNavigate={handleNavigate}
-            className="rounded-lg overflow-hidden custom-calendar"
-            components={{
-              event: (props: EventProps<Task>) => (
-                <div>
-                  <Checkbox
-                    checked={props.event.completed}
-                    onCheckedChange={(checked: boolean) =>
-                      handleTaskCompletion(props.event, checked as boolean)
-                    }
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <span>{props.title}</span>
-                </div>
-              ),
-            }}
-            date={currentDate}
-          />
-        </motion.div>
-      </div>
-      <AnimatePresence>
-        {selectedTask && (
-          <Dialog
-            open={!!selectedTask}
-            onOpenChange={() => setSelectedTask(null)}
+    <div className="w-full flex justify-center pt-5 px-4 items-center ">
+      <div className="w-full max-w-[1300px]   overflow-hidden">
+        <div className="p-6 bg-gray-900 rounded-lg ">
+          <div className="mb-4 flex justify-between items-center">
+            <h2 className="text-2xl font-bold text-white">Your Tasks</h2>
+            <OverdueTasksWarning />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <DialogContent className="bg-gray-900 text-white">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-              >
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold text-white">
-                    {selectedTask.title}
-                  </DialogTitle>
-                </DialogHeader>
-                <div className="mt-4 space-y-2">
-                  <p>
-                    <span className="font-semibold">Start:</span>{" "}
-                    {format(selectedTask.start, "PPpp")}
-                  </p>
-                  <p>
-                    <span className="font-semibold">End:</span>{" "}
-                    {format(
-                      addMinutes(selectedTask.start, selectedTask.duration),
-                      "PPpp"
-                    )}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Duration:</span>{" "}
-                    {selectedTask.duration} minutes
-                  </p>
-                  <p>
-                    <span className="font-semibold">Priority:</span>{" "}
-                    <Badge
-                      variant={
-                        selectedTask.priority as
-                          | "default"
-                          | "secondary"
-                          | "destructive"
+            <Calendar
+              localizer={localizer}
+              events={filteredTasks}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: window.innerWidth < 768 ? 700 : 500 }}
+              eventPropGetter={eventStyleGetter}
+              onSelectEvent={handleSelectEvent}
+              views={[Views.MONTH, Views.WEEK, Views.DAY]}
+              view={view}
+              onView={handleViewChange}
+              defaultView={Views.DAY}
+              onNavigate={handleNavigate}
+              className="rounded-lg  overflow-hidden custom-calendar"
+              components={{
+                event: (props: EventProps<Task>) => (
+                  <div>
+                    <Checkbox
+                      checked={props.event.completed}
+                      onCheckedChange={(checked: boolean) =>
+                        handleTaskCompletion(props.event, checked as boolean)
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <span>{props.title}</span>
+                  </div>
+                ),
+              }}
+              date={currentDate}
+            />
+          </motion.div>
+        </div>
+        <AnimatePresence>
+          {selectedTask && (
+            <Dialog
+              open={!!selectedTask}
+              onOpenChange={() => setSelectedTask(null)}
+            >
+              <DialogContent className="bg-gray-900 text-white">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold text-white">
+                      {selectedTask.title}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="mt-4 space-y-2">
+                    <p>
+                      <span className="font-semibold">Start:</span>{" "}
+                      {format(selectedTask.start, "PPpp")}
+                    </p>
+                    <p>
+                      <span className="font-semibold">End:</span>{" "}
+                      {format(
+                        addMinutes(selectedTask.start, selectedTask.duration),
+                        "PPpp"
+                      )}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Duration:</span>{" "}
+                      {selectedTask.duration} minutes
+                    </p>
+                    <p>
+                      <span className="font-semibold">Priority:</span>{" "}
+                      <Badge
+                        variant={
+                          selectedTask.priority as
+                            | "default"
+                            | "secondary"
+                            | "destructive"
+                        }
+                      >
+                        {selectedTask.priority}
+                      </Badge>
+                    </p>
+                    <p>
+                      <span className="font-semibold">Description:</span>{" "}
+                      {selectedTask.description}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Repeat:</span>{" "}
+                      {selectedTask.repeat}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Splittable:</span>{" "}
+                      {selectedTask.isSplittable ? "Yes" : "No"}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Work Hours:</span>{" "}
+                      {selectedTask.isWorkHours ? "During" : "Outside"}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Completed:</span>{" "}
+                      {selectedTask.completed ? "Yes" : "No"}
+                    </p>
+                  </div>
+                  <div className="mt-6 flex justify-between">
+                    <Button variant="destructive" onClick={handleDeleteTask}>
+                      Delete
+                    </Button>
+                    <Button
+                      className="bg-blue-600 hover:bg-blue-700"
+                      onClick={() =>
+                        router.push(`/edit-task/${selectedTask.id}`)
                       }
                     >
-                      {selectedTask.priority}
-                    </Badge>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Description:</span>{" "}
-                    {selectedTask.description}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Repeat:</span>{" "}
-                    {selectedTask.repeat}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Splittable:</span>{" "}
-                    {selectedTask.isSplittable ? "Yes" : "No"}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Work Hours:</span>{" "}
-                    {selectedTask.isWorkHours ? "During" : "Outside"}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Completed:</span>{" "}
-                    {selectedTask.completed ? "Yes" : "No"}
-                  </p>
-                </div>
-                <div className="mt-6 flex justify-between">
-                  <Button variant="destructive" onClick={handleDeleteTask}>
-                    Delete
-                  </Button>
-                  <Button
-                    className="bg-blue-600 hover:bg-blue-700"
-                    onClick={() => router.push(`/edit-task/${selectedTask.id}`)}
-                  >
-                    Edit
-                  </Button>
-                </div>
-              </motion.div>
-            </DialogContent>
-          </Dialog>
-        )}
-      </AnimatePresence>
+                      Edit
+                    </Button>
+                  </div>
+                </motion.div>
+              </DialogContent>
+            </Dialog>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

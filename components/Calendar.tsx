@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import { Calendar as CalendarComponent } from '@/components/ui/calendar'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import TaskForm from './TaskForm'
+import React, { useState } from "react";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import TaskForm from "./TaskForm";
 
 const Calendar: React.FC = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
     <Card>
@@ -20,11 +20,11 @@ const Calendar: React.FC = () => {
           onSelect={setDate}
           className="rounded-md border"
         />
-        <TaskForm selectedDate={date} />
+        {/* <TaskForm selectedDate={date} /> */}
+        <TaskForm />
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default Calendar
-
+export default Calendar;

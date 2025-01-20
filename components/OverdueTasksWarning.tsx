@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import { useTaskContext } from './TaskContext'
-import { AlertTriangle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import React, { useState } from "react";
+import { useTaskContext } from "./TaskContext";
+import { AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 const OverdueTasksWarning: React.FC = () => {
-  const { getOverdueTasks } = useTaskContext()
-  const [isOpen, setIsOpen] = useState(false)
+  const { getOverdueTasks } = useTaskContext();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const overdueTasks = getOverdueTasks()
+  const overdueTasks = getOverdueTasks();
 
   if (overdueTasks.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -25,10 +25,11 @@ const OverdueTasksWarning: React.FC = () => {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="bg-yellow-500 hover:bg-yellow-600 text-white"
+          className="bg-yellow-500 hover:bg-yellow-600 hover:text-white text-white"
         >
           <AlertTriangle className="mr-2 h-4 w-4" />
-          {overdueTasks.length} Overdue {overdueTasks.length === 1 ? 'Task' : 'Tasks'}
+          {overdueTasks.length} Overdue{" "}
+          {overdueTasks.length === 1 ? "Task" : "Tasks"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
@@ -49,8 +50,7 @@ const OverdueTasksWarning: React.FC = () => {
         </div>
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
 
-export default OverdueTasksWarning
-
+export default OverdueTasksWarning;

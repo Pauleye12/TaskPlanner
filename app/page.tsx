@@ -27,7 +27,7 @@ export default function Home() {
   // }, [])
 
   return (
-    <main className="min-h-screen pt-[80px] pb-0 p-8">
+    <main className="min-h-screen bg-gray-950 pt-[80px] lg:pb-2 pb-6 p-2  lg:p-8 ">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}

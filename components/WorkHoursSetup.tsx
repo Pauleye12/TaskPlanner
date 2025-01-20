@@ -35,22 +35,26 @@ const WorkHoursSetup: React.FC = () => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full bg-gray-900 mt-10 border-none text-white   max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">
+        <CardTitle className="text-2xl   font-bold text-center">
           Set Your Work Hours
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <CardContent className="mt-7">
+        <form onSubmit={handleSubmit} className="space-y-10  ">
           {(Object.keys(workHours) as DayOfWeek[]).map((day) => (
-            <div key={day} className="space-y-2">
+            <div key={day} className="space-y-1">
               <div className="flex items-center justify-between">
-                <Label htmlFor={`${day}-toggle`} className="text-lg capitalize">
+                <Label
+                  htmlFor={`${day}-toggle`}
+                  className="text-lg font-medium capitalize"
+                >
                   {day}
                 </Label>
                 <Switch
                   id={`${day}-toggle`}
+                  className=""
                   checked={workHours[day].isWorkDay}
                   onCheckedChange={() => handleWorkDayToggle(day)}
                 />
@@ -58,10 +62,16 @@ const WorkHoursSetup: React.FC = () => {
               {workHours[day].isWorkDay && (
                 <div className="flex space-x-4">
                   <div className="flex-1">
-                    <Label htmlFor={`${day}-start`}>Start Time</Label>
+                    <Label
+                      className="text-indigo-500  "
+                      htmlFor={`${day}-start`}
+                    >
+                      Start Time
+                    </Label>
                     <Input
                       id={`${day}-start`}
                       type="time"
+                      className="focus-visible:border-indigo-600 bg-gray-800 border-gray-800 "
                       value={workHours[day].startTime}
                       onChange={(e) =>
                         handleTimeChange(day, "startTime", e.target.value)
@@ -69,10 +79,16 @@ const WorkHoursSetup: React.FC = () => {
                     />
                   </div>
                   <div className="flex-1">
-                    <Label htmlFor={`${day}-end`}>End Time</Label>
+                    <Label
+                      className="text-indigo-500 font-medium"
+                      htmlFor={`${day}-end`}
+                    >
+                      End Time
+                    </Label>
                     <Input
                       id={`${day}-end`}
                       type="time"
+                      className="focus-visible:border-indigo-600 bg-gray-800 border-gray-800 "
                       value={workHours[day].endTime}
                       onChange={(e) =>
                         handleTimeChange(day, "endTime", e.target.value)
@@ -85,7 +101,7 @@ const WorkHoursSetup: React.FC = () => {
           ))}
           <Button
             type="submit"
-            className="w-full bg-teal-600 hover:bg-teal-700 text-white"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
           >
             Save Work Hours
           </Button>

@@ -211,7 +211,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           // required
-          className="bg-gray-800 h-fit py-2  text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700"
+          className="bg-gray-800 h-fit py-2  text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-indigo-600"
         />
         <p
           className={`text-red-500 text-sm ${titleWarn ? "block" : "hidden"} `}
@@ -229,7 +229,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-full justify-start text-left focus-visible:ring-0 border-none active:ring-0 hover:bg-gray-600 hover:text-white outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700 font-normal",
+                  "w-full justify-start text-left focus-visible:ring-0 border-none active:ring-0 hover:bg-gray-600 hover:text-white outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-indigo-600 font-normal",
                   !selectedDate && "text-muted-foreground",
                   "bg-gray-800 text-white h-fit py-2 border-gray-700"
                 )}
@@ -260,7 +260,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
           <TimePicker
             value={selectedTime}
             onChange={(value) => setSelectedTime(value)}
-            className="bg-gray-800 rounded-lg w-full  text-white border-gray-700"
+            className="bg-gray-800 rounded-lg w-full  text-white border-indigo-600"
           />
         </div>
       </div>
@@ -277,7 +277,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
             required
             min="1"
             // style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
-            className="bg-gray-800 h-fit py-2 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700"
+            className="bg-gray-800 h-fit py-2 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-indigo-600"
           />
         </div>
         <div className="w-full flex flex-col items-start gap-2 lg:max-w-[40%] ">
@@ -288,7 +288,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
             value={priority}
             onValueChange={(value: Priority) => setPriority(value)}
           >
-            <SelectTrigger className="bg-gray-800 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700 w-full h-fit hover:bg-gray-600 py-2">
+            <SelectTrigger className="bg-gray-800 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-indigo-600 w-full h-fit hover:bg-gray-600 py-2">
               <SelectValue placeholder="Select priority" />
             </SelectTrigger>
             <SelectContent className="bg-gray-800  border-none text-white">
@@ -310,7 +310,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task }) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          className="bg-gray-800 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-gray-700"
+          className="bg-gray-800 text-white focus-visible:ring-0 border-none active:ring-0 outline-none ring-0 focus-visible:border-2 focus-visible:border-solid focus-visible:border-indigo-600"
         />
       </div>
       <div className="flex flex-col items-start gap-2 w-full">
