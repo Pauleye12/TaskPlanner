@@ -171,7 +171,7 @@ const TaskCalendar: React.FC = () => {
               events={filteredTasks}
               startAccessor="start"
               endAccessor="end"
-              style={{ height: window.innerWidth < 768 ? 700 : 500 }}
+              style={{ height: window.innerWidth < 768 ? 680 : 500 }}
               eventPropGetter={eventStyleGetter}
               onSelectEvent={handleSelectEvent}
               views={[Views.MONTH, Views.WEEK, Views.DAY]}
