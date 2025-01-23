@@ -5,7 +5,7 @@ import TaskCalendar from "@/components/TaskCalendar";
 import WorkHoursSetup from "@/components/WorkHoursSetup";
 import { useTaskContext } from "@/components/TaskContext";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
+// import Navbar from "@/components/Navbar";
 
 const MainContent = () => {
   const { isWorkHoursSet } = useTaskContext();
@@ -27,8 +27,7 @@ export default function Home() {
   // }, [])
 
   return (
-    <main className="min-h-screen bg-gray-950 pt-[80px] lg:pb-2 pb-6 p-2 ">
-      <Navbar />
+    <main>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}

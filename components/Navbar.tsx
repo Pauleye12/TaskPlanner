@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { CalendarCheck } from "lucide-react";
 import Link from "next/link";
@@ -21,7 +23,7 @@ const Navbar = () => {
         </h1>
         <ul className="lg:flex hidden gap-7 items-center">
           <li className="text-black font-medium ">
-            <Link href={"/"}>How it Works</Link>
+            <Link href={"/how-it-works"}>How it Works</Link>
           </li>
           <li
             onClick={() => setIsWorkHoursSet(false)}
@@ -44,9 +46,9 @@ const Navbar = () => {
           } `}
         >
           <Link
-            href={"/"}
+            href={"/how-it-works"}
             onClick={() => setShowOptions((prev: boolean) => !prev)}
-            className="w-16 h-16 flex justify-center items-center rounded-full border border-solid border-indigo-600 bg-white"
+            className="w-14 h-14 flex justify-center items-center rounded-full border border-solid border-indigo-600 bg-white"
           >
             <FileSearch size={30} />
           </Link>
@@ -55,23 +57,23 @@ const Navbar = () => {
               setIsWorkHoursSet(false);
               setShowOptions((prev: boolean) => !prev);
             }}
-            className="w-16 h-16 flex justify-center items-center rounded-full border border-solid border-indigo-600 bg-white"
+            className="w-14 h-14 flex justify-center items-center rounded-full border border-solid border-indigo-600 bg-white"
           >
             <AlarmClockPlus size={30} />
           </button>
           <Link
             onClick={() => setShowOptions((prev: boolean) => !prev)}
             href={"/add-task"}
-            className="w-16 h-16 flex justify-center items-center rounded-full border border-solid border-indigo-600 bg-white"
+            className="w-14 h-14 flex justify-center items-center rounded-full border border-solid border-indigo-600 bg-white"
           >
             <CalendarPlus2 size={30} />
           </Link>
         </div>
         <button
           onClick={() => setShowOptions((prev: boolean) => !prev)}
-          className="p-4 rounded-full border border-solid border-indigo-600 bg-gray-900"
+          className="p-3 rounded-full border border-solid border-indigo-600 bg-gray-900"
         >
-          <AlignVerticalJustifyEnd size={36} className="text-indigo-600" />
+          <AlignVerticalJustifyEnd size={34} className="text-indigo-600" />
         </button>
       </div>
     </header>
