@@ -153,9 +153,9 @@ const TaskCalendar: React.FC = () => {
   );
 
   return (
-    <div className="w-full flex justify-center pt-5 px-4 items-center ">
+    <div className="w-full flex justify-center pt-5 md:px-4 px-2 items-center ">
       <div className="w-full max-w-[1300px]   overflow-hidden">
-        <div className="p-6 bg-gray-900 rounded-lg ">
+        <div className="md:p-6 px-3 py-6 bg-gray-900 rounded-lg ">
           <div className="mb-4 flex justify-between items-center">
             <h2 className="text-2xl font-bold text-white">Your Tasks</h2>
             <OverdueTasksWarning />
